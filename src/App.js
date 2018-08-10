@@ -1,48 +1,53 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './logo.png';
 import './App.css';
 import axios from 'axios';
 
+import VideoList from './components/VideoList/VideoList';
+import apiKey from './apiKey';
+
 class App extends Component {
 
-  state = {
-    items: []
-  }
+    state = {
+      items: []
+    }
 
-  componentDidMount() {
-      const url = 'https://www.googleapis.com/youtube/v3';
+    componentDidMount() {
+        const url = 'https://www.googleapis.com/youtube/v3';
 
-      axios.get(url + '/videos', {
-        params: {
-          key: 'you_key_goes_here',
-          part: 'snippet',
-          chart: 'mostPopular'
-        }
-      })
-      .then(function (response) {
-        var items = response.data.items.map(item => {
-          return {
-            'key': item.id,
-            'description': item.snippet.description
-          };
-          this.setState({items: items});
-        });
-      })
-  }
+        axios.get(url + '/videos', {
+            params: {
+                key: apiKey,
+                part: 'snippet',
+                chart: 'mostPopular'
+            }
+        })
+        .then(response => {
+            var items = response.data.items.map(item => {
+                return {
+                    'key': item.id,
+                    'thumb': item.snippet.thumbnails.standard.url,
+                    'title': item.snippet.title,
+                    'channel': item.snippet.channelTitle,
+                    'published': item.snippet.publishedAt
+                };
+            });
+            this.setState({items: items});
+        })
+    }
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="App">
+                <header>
+                    <img src={logo} className="logo" alt="logo" />
+                </header>
+                <main>
+                    <VideoList items={this.state.items} />
+                </main>
+            </div>
+        );
+    }
 }
 
 export default App;

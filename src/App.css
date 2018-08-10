@@ -1,17 +1,24 @@
-.App {
-  text-align: center;
+
+
+header {
+    /* fixed position a zero-height full width container */
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+    background-color: white;
+	  /* center all inline content */
+	  text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.logo {
+  width: 200px;
+	display: inline-block;
+	margin-top: 5px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+main {
+  margin-top: 55px;
 }
 
 .App-title {
