@@ -3,22 +3,26 @@
 header {
     /* fixed position a zero-height full width container */
 	  position: fixed;
-	  top: 0;
-	  left: 0;
-	  right: 0;
-    background-color: white;
-	  /* center all inline content */
-	  text-align: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: aqua;
 }
 
+header > div {
+  background-color: white;
+  margin: 0 auto;
+  max-width: 560px;
+}
 .logo {
   width: 200px;
 	display: inline-block;
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 main {
-  margin-top: 55px;
+  margin: 370px auto 0 auto;
+  max-width: 560px;
 }
 
 .App-title {

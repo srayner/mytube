@@ -4,9 +4,15 @@ article {
     background-color: white;
 }
 
+article:hover {
+    background-color: #e7e7e7;
+    cursor: pointer;
+}
+
 article img {
-    height: 120px;
-    margin: 5px;
+    width: 120px;
+    height: 90px;
+    _object-fit: contain;
 }
 
 article div {
@@ -38,6 +44,12 @@ article .channel {
 article .published {
     color: grey;
     font-size: 12px;
-    display: block;
     margin-top: 2px;
+}
+
+article .views {
+    color: grey;
+    font-size: 12px;
+    margin-top: 2px;
+
 }

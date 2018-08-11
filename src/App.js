@@ -5,34 +5,85 @@ import axios from 'axios';
 
 import VideoList from './components/VideoList/VideoList';
 import apiKey from './apiKey';
+import Player from './components/Player/Player';
+import SearchBox from './components/SearchBox/SearchBox';
 
 class App extends Component {
 
+    searchUrl = 'https://www.googleapis.com/youtube/v3';
+    videoPlayerUrl = 'https://www.youtube.com/embed/';
     state = {
-      items: []
+        currentSrc: null,
+        items: []
     }
 
-    componentDidMount() {
-        const url = 'https://www.googleapis.com/youtube/v3';
+    buildList = (response) => {
+        var items = response.data.items.map(item => {
+            return {
+                'id': item.id,
+                'thumb': item.snippet.thumbnails.default.url,
+                'title': item.snippet.title,
+                'channel': item.snippet.channelTitle,
+                'published': item.snippet.publishedAt,
+                'stats': item.statistics
+            };
+        });
+        var currentSrc = this.videoPlayerUrl + items[0].id;
+        this.setState({
+            currentSrc: currentSrc,
+            items: items
+        });
+    }
 
-        axios.get(url + '/videos', {
+    clickHandler = (item) => {
+        this.setState({currentSrc: this.videoPlayerUrl + item.id});
+    }
+
+    getVideos = (videoIds) => {
+        axios.get(this.searchUrl + '/videos', {
             params: {
                 key: apiKey,
-                part: 'snippet',
-                chart: 'mostPopular'
+                part: 'snippet, statistics',
+                id: videoIds.join(','),
+                maxResults: 25
             }
         })
         .then(response => {
-            var items = response.data.items.map(item => {
-                return {
-                    'key': item.id,
-                    'thumb': item.snippet.thumbnails.standard.url,
-                    'title': item.snippet.title,
-                    'channel': item.snippet.channelTitle,
-                    'published': item.snippet.publishedAt
-                };
+            this.buildList(response);
+        });
+
+    }
+    searchHandler = (text) => {
+        axios.get(this.searchUrl + '/search', {
+            params: {
+                key: apiKey,
+                part: 'snippet',
+                type: 'video',
+                q: text,
+                maxResults: 25
+            }
+        })
+        .then(response => {
+            var videoIds = response.data.items.map(item => {
+                return item.id.videoId;
             });
-            this.setState({items: items});
+            console.log(videoIds);
+
+            this.getVideos(videoIds);
+        });
+    }
+
+    componentDidMount() {
+        axios.get(this.searchUrl + '/videos', {
+            params: {
+                key: apiKey,
+                part: 'snippet,statistics',
+                chart: 'mostPopular',
+                maxResults: 25
+            }
+        })
+        .then(response => {
+            this.buildList(response);
         })
     }
 
@@ -40,10 +91,14 @@ class App extends Component {
         return (
             <div className="App">
                 <header>
-                    <img src={logo} className="logo" alt="logo" />
+                    <div>
+                        <img src={logo} className="logo" alt="logo" />
+                        <SearchBox onSubmit={this.searchHandler}/>
+                    </div>
+                    <Player src={this.state.currentSrc}/>
                 </header>
                 <main>
-                    <VideoList items={this.state.items} />
+                    <VideoList items={this.state.items} onClick={this.clickHandler}/>
                 </main>
             </div>
         );

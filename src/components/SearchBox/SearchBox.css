@@ -1,0 +1,27 @@
+.SearchBox input, .SearchBox button {
+    margin: 6px;
+    padding: 6px;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.SearchBox input {
+    margin-right: 0;
+    outline-style: none;
+}
+
+.SearchBox button {
+    display: inline-block;
+    margin-left: 0;
+    border-left: none;
+    padding: 6px 20px;
+    background-color: #ccc;
+}
+
+.SearchBox button:hover {
+    cursor: pointer;
+    background-color: #ddd;
+}
