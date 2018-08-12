@@ -9,9 +9,9 @@ const Player = (props) => {
             width="560"
             height="315"
             src={props.src}
-            frameborder="0"
+            frameBorder="0"
             allow="autoplay; encrypted-media"
-            allowfullscreen>
+            allowFullScreen>
         </iframe>
     );
 }
