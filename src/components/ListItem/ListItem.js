@@ -20,7 +20,7 @@ const ListItem = (props) => {
         views = (viewCount / 1000000000).toFixed(1) + 'B views'
     }
     return (
-        <article onClick={() => props.onClick(props.item)}>
+        <article onClick={() => props.onClick(props.item.id)}>
             <img src={props.item.thumb} alt={props.item.alt}/>
             <div>
                 <h3>{props.item.title}</h3>

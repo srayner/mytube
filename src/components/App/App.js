@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
 import logo from './logo-dark.png';
 import './App.css';
+import apiKey from '../../apiKey';
 import axios from 'axios';
-
-import VideoList from './components/VideoList/VideoList';
-import apiKey from './apiKey';
-import Player from './components/Player/Player';
-import SearchBox from './components/SearchBox/SearchBox';
+import VideoList from '../VideoList/VideoList';
+import Player from '../Player/Player';
+import SearchBox from '../SearchBox/SearchBox';
+import { connect } from 'react-redux';
 
 class App extends Component {
 
     searchUrl = 'https://www.googleapis.com/youtube/v3';
     videoPlayerUrl = 'https://www.youtube.com/embed/';
-    state = {
-        currentSrc: null,
-        items: []
-    }
-
+    
     buildList = (response) => {
         var items = response.data.items.map(item => {
             return {
@@ -28,15 +24,7 @@ class App extends Component {
                 'stats': item.statistics
             };
         });
-        var currentSrc = this.videoPlayerUrl + items[0].id;
-        this.setState({
-            currentSrc: currentSrc,
-            items: items
-        });
-    }
-
-    clickHandler = (item) => {
-        this.setState({currentSrc: this.videoPlayerUrl + item.id});
+        this.props.updateList(items);
     }
 
     getVideos = (videoIds) => {
@@ -67,8 +55,6 @@ class App extends Component {
             var videoIds = response.data.items.map(item => {
                 return item.id.videoId;
             });
-            console.log(videoIds);
-
             this.getVideos(videoIds);
         });
     }
@@ -88,6 +74,8 @@ class App extends Component {
     }
 
     render() {
+        console.log(this.props.items);
+        const currentSrc = this.videoPlayerUrl + this.props.video.currentId;
         return (
             <div className="App">
                 <header>
@@ -95,14 +83,38 @@ class App extends Component {
                         <img src={logo} className="logo" alt="logo" />
                         <SearchBox onSubmit={this.searchHandler}/>
                     </div>
-                    <Player src={this.state.currentSrc}/>
+                    <Player src={currentSrc}/>
                 </header>
                 <main>
-                    <VideoList items={this.state.items} onClick={this.clickHandler}/>
+                    <VideoList items={this.props.video.items} onClick={this.props.setCurrentId}/>
                 </main>
             </div>
         );
     }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        video: state.video,
+        playlist: state.playlist
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateList: (items) => {
+            dispatch({
+                type: 'VIDEO_UPDATE_LIST',
+                payload: items
+            });
+        },
+        setCurrentId: (id) => {
+            dispatch({
+                type: 'VIDEO_SET_CURRENT_ID',
+                payload: id
+            });
+        }
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
