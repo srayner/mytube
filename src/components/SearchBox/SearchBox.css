@@ -2,8 +2,8 @@
     margin: 15px;
     padding: 6px;
     box-sizing: border-box;
-    border: 1px solid #aaa;
-    background-color: #fff;
+    border: 1px solid #303030;
+    
     font-size: 14px;
     line-height: 16px;
 }
@@ -11,6 +11,8 @@
 .SearchBox input {
     margin-right: 0;
     outline-style: none;
+    background-color: #000;
+    color: #707070;
 }
 
 .SearchBox button {
@@ -18,10 +20,11 @@
     margin-left: 0;
     border-left: none;
     padding: 6px 20px;
-    background-color: #ccc;
+    background-color: #303030;
+    color: #707070;
 }
 
 .SearchBox button:hover {
     cursor: pointer;
-    background-color: #ddd;
+    color: #ccc;
 }

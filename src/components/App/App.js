@@ -7,6 +7,7 @@ import VideoList from '../VideoList/VideoList';
 import Player from '../Player/Player';
 import SearchBox from '../SearchBox/SearchBox';
 import { connect } from 'react-redux';
+import { updateList, setCurrentId } from '../../actions/videoActions';
 
 class App extends Component {
 
@@ -102,18 +103,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateList: (items) => {
-            dispatch({
-                type: 'VIDEO_UPDATE_LIST',
-                payload: items
-            });
-        },
-        setCurrentId: (id) => {
-            dispatch({
-                type: 'VIDEO_SET_CURRENT_ID',
-                payload: id
-            });
-        }
+        updateList: (items) => dispatch(updateList(items)),
+        setCurrentId: (id) => dispatch(setCurrentId(id))
     };
 }
 
