@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import logo from './logo-dark.png';
 import './App.css';
-import apiKey from '../../apiKey';
-import axios from 'axios';
 import VideoList from '../VideoList/VideoList';
 import Player from '../Player/Player';
 import SearchBox from '../SearchBox/SearchBox';
 import { connect } from 'react-redux';
-import { updateList, setCurrentId } from '../../actions/videoActions';
+import { updateList, setCurrentId, getPopularVideos } from '../../actions/videoActions';
+import youtube from '../../library/youtube';
 
 class App extends Component {
 
-    searchUrl = 'https://www.googleapis.com/youtube/v3';
     videoPlayerUrl = 'https://www.youtube.com/embed/';
     
     buildList = (response) => {
@@ -29,30 +27,13 @@ class App extends Component {
     }
 
     getVideos = (videoIds) => {
-        axios.get(this.searchUrl + '/videos', {
-            params: {
-                key: apiKey,
-                part: 'snippet, statistics',
-                id: videoIds.join(','),
-                maxResults: 25
-            }
-        })
-        .then(response => {
+        youtube.getVideos(videoIds).then(response => {
             this.buildList(response);
         });
-
     }
+
     searchHandler = (text) => {
-        axios.get(this.searchUrl + '/search', {
-            params: {
-                key: apiKey,
-                part: 'snippet',
-                type: 'video',
-                q: text,
-                maxResults: 25
-            }
-        })
-        .then(response => {
+        youtube.search(text).then(response => {
             var videoIds = response.data.items.map(item => {
                 return item.id.videoId;
             });
@@ -61,16 +42,8 @@ class App extends Component {
     }
 
     componentDidMount() {
-        axios.get(this.searchUrl + '/videos', {
-            params: {
-                key: apiKey,
-                part: 'snippet,statistics',
-                chart: 'mostPopular',
-                maxResults: 25
-            }
-        })
-        .then(response => {
-            this.buildList(response);
+        youtube.getPopularVideos().then(response => {
+            this.props.getPopularVideos(response);
         })
     }
 
@@ -104,7 +77,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         updateList: (items) => dispatch(updateList(items)),
-        setCurrentId: (id) => dispatch(setCurrentId(id))
+        setCurrentId: (id) => dispatch(setCurrentId(id)),
+        getPopularVideos: (response) => dispatch(getPopularVideos(response))
     };
 }
 
