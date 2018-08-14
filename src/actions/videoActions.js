@@ -1,3 +1,5 @@
+import youtube from '../library/youtube';
+
 export function updateList(items) {
     return {
         type: 'VIDEO_UPDATE_LIST',
@@ -12,11 +14,18 @@ export function setCurrentId(id) {
     };
 }
 
-export function getPopularVideos(response) {
-    return {
-        type: 'VIDEO_UPDATE_LIST',
-        payload: mapResponse(response)
-    }
+export function getPopularVideos() {
+    console.log('action fired');
+    return dispatch => {
+        youtube.getPopularVideos()
+            .then(response => {
+                return mapResponse(response)
+            }).then(payload => dispatch({
+                type: 'VIDEO_UPDATE_LIST',
+                payload: payload
+            }));
+            
+    };
 }
 
 function mapResponse(response) {

@@ -42,9 +42,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        youtube.getPopularVideos().then(response => {
-            this.props.getPopularVideos(response);
-        })
+        this.props.getPopularVideos();
     }
 
     render() {
