@@ -46,7 +46,6 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.props.items);
         const currentSrc = this.videoPlayerUrl + this.props.video.currentId;
         return (
             <div className="App">
