@@ -29,7 +29,6 @@ export function getPopularVideos() {
 }
 
 export function searchVideos(text) {
-  console.log("action fired");
   return dispatch => {
     youtube
       .search(text)
