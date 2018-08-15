@@ -15,7 +15,6 @@ export function setCurrentId(id) {
 }
 
 export function getPopularVideos() {
-    console.log('action fired');
     return dispatch => {
         youtube.getPopularVideos()
             .then(response => {
@@ -25,6 +24,23 @@ export function getPopularVideos() {
                 payload: payload
             }));
             
+    };
+}
+
+export function searchVideos(text) {
+    console.log('action fired');
+    return dispatch => {
+        youtube.search(text)
+            .then(response => {
+                console.log('response', response);
+                return response.data.items.map(item => {
+                    return item.id.videoId;
+                });
+            }).then(videoIds => youtube.getVideos(videoIds))
+            .then(payload => dispatch({
+                type: 'VIDEO_UPDATE_LIST',
+                payload: payload
+            }));
     };
 }
 

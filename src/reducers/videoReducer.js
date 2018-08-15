@@ -6,6 +6,7 @@ const initialState = {
 const videoReducer = (state = initialState, action) => {
     switch (action.type) {
         case "VIDEO_UPDATE_LIST":
+            console.log(action.payload);
             state = {
                 ...state,
                 currentId: action.payload[0].id,

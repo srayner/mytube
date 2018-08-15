@@ -7,5 +7,5 @@ import thunk from 'redux-thunk';
 export default createStore(
     combineReducers({video: videoReducer, playlist: playlistReducer}),
     {},
-    applyMiddleware(createLogger(), thunk)
+    applyMiddleware(thunk)
 );

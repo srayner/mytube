@@ -5,7 +5,7 @@ import VideoList from '../VideoList/VideoList';
 import Player from '../Player/Player';
 import SearchBox from '../SearchBox/SearchBox';
 import { connect } from 'react-redux';
-import { updateList, setCurrentId, getPopularVideos } from '../../actions/videoActions';
+import { updateList, setCurrentId, getPopularVideos, searchVideos } from '../../actions/videoActions';
 import youtube from '../../library/youtube';
 
 class App extends Component {
@@ -33,12 +33,7 @@ class App extends Component {
     }
 
     searchHandler = (text) => {
-        youtube.search(text).then(response => {
-            var videoIds = response.data.items.map(item => {
-                return item.id.videoId;
-            });
-            this.getVideos(videoIds);
-        });
+        this.props.searchVideos(text);
     }
 
     componentDidMount() {
@@ -75,7 +70,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateList: (items) => dispatch(updateList(items)),
         setCurrentId: (id) => dispatch(setCurrentId(id)),
-        getPopularVideos: (response) => dispatch(getPopularVideos(response))
+        getPopularVideos: (response) => dispatch(getPopularVideos(response)),
+        searchVideos: (text) => dispatch(searchVideos(text))
     };
 }
 
