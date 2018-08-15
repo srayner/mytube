@@ -27,6 +27,16 @@ class YouTube {
     });
   }
 
+  getCategories() {
+    return axios.get(this.searchUrl + "/videoCategories", {
+      params: {
+        key: apiKey,
+        part: "snippet",
+        regionCode: "GB"
+      }
+    });
+  }
+
   search(text) {
     return axios.get(this.searchUrl + "/search", {
       params: {

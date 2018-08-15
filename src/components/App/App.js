@@ -4,11 +4,13 @@ import "./App.css";
 import VideoList from "../VideoList/VideoList";
 import Player from "../Player/Player";
 import SearchBox from "../SearchBox/SearchBox";
+import DropdownList from "../DropdownList/DropdownList";
 import { connect } from "react-redux";
 import {
   setCurrentId,
   getPopularVideos,
-  searchVideos
+  searchVideos,
+  getCategories
 } from "../../actions/videoActions";
 
 class App extends Component {
@@ -18,15 +20,18 @@ class App extends Component {
 
   componentDidMount() {
     this.props.getPopularVideos();
+    this.props.getCategories();
   }
 
   render() {
+    console.log("vid categores", this.props.video.categories);
     return (
       <div className="App">
         <header>
           <div>
             <img src={logo} className="logo" alt="logo" />
             <SearchBox onSubmit={this.searchHandler} />
+            <DropdownList items={this.props.video.categories} />
           </div>
           <Player videoId={this.props.video.currentId} />
         </header>
@@ -52,7 +57,8 @@ const mapDispatchToProps = dispatch => {
   return {
     setCurrentId: id => dispatch(setCurrentId(id)),
     getPopularVideos: response => dispatch(getPopularVideos(response)),
-    searchVideos: text => dispatch(searchVideos(text))
+    searchVideos: text => dispatch(searchVideos(text)),
+    getCategories: text => dispatch(getCategories(text))
   };
 };
 

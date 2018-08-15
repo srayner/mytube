@@ -28,6 +28,20 @@ export function getPopularVideos() {
   };
 }
 
+export function getCategories() {
+  return dispatch => {
+    youtube
+      .getCategories()
+      .then(mapCategories)
+      .then(payload =>
+        dispatch({
+          type: "VIDEO_UPDATE_CATEGORIES",
+          payload: payload
+        })
+      );
+  };
+}
+
 export function searchVideos(text) {
   return dispatch => {
     youtube
@@ -54,5 +68,20 @@ function mapResponse(response) {
       published: item.snippet.publishedAt,
       stats: item.statistics
     };
+  });
+}
+
+function mapCategories(response) {
+  console.log("categories", response);
+  const filtered = response.data.items.filter(item => {
+    return item.snippet.assignable;
+  });
+  return filtered.map(item => {
+    if (item.snippet.assignable) {
+      return {
+        id: item.id,
+        title: item.snippet.title
+      };
+    }
   });
 }
