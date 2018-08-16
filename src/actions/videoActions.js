@@ -14,15 +14,29 @@ export function setCurrentId(id) {
   };
 }
 
-export function getPopularVideos() {
+export function searchByCategory(id) {
+  return dispatch => {
+    dispatch(setCurrentCategoryId(id));
+    dispatch(getPopularVideos(id));
+  };
+}
+
+export function setCurrentCategoryId(categoryId) {
+  return {
+    type: "VIDEO_SET_CURRENT_CATEGORY_ID",
+    payload: categoryId
+  };
+}
+
+export function getPopularVideos(categoryId) {
   return dispatch => {
     youtube
-      .getPopularVideos()
+      .getPopularVideos(categoryId)
       .then(mapResponse)
-      .then(payload =>
+      .then(videos =>
         dispatch({
           type: "VIDEO_UPDATE_LIST",
-          payload: payload
+          payload: videos
         })
       );
   };
@@ -72,7 +86,6 @@ function mapResponse(response) {
 }
 
 function mapCategories(response) {
-  console.log("categories", response);
   const filtered = response.data.items.filter(item => {
     return item.snippet.assignable;
   });

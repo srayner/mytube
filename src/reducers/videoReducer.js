@@ -1,16 +1,17 @@
 const initialState = {
   currentId: null,
   items: [],
+  currentCategoryId: null,
   categories: []
 };
 
 const videoReducer = (state = initialState, action) => {
   switch (action.type) {
     case "VIDEO_UPDATE_LIST":
-      console.log(action.payload);
+      const currentId = action.payload.length > 0 ? action.payload[0].id : null;
       state = {
         ...state,
-        currentId: action.payload[0].id,
+        currentId: currentId,
         items: action.payload
       };
       break;
@@ -24,6 +25,12 @@ const videoReducer = (state = initialState, action) => {
       state = {
         ...state,
         categories: action.payload
+      };
+      break;
+    case "VIDEO_SET_CURRENT_CATEGORY_ID":
+      state = {
+        ...state,
+        currentCategoryId: action.payload
       };
       break;
   }

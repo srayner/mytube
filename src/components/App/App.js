@@ -10,7 +10,8 @@ import {
   setCurrentId,
   getPopularVideos,
   searchVideos,
-  getCategories
+  getCategories,
+  searchByCategory
 } from "../../actions/videoActions";
 
 class App extends Component {
@@ -19,19 +20,23 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.props.getPopularVideos();
     this.props.getCategories();
+    this.props.getPopularVideos(this.props.video.setCurrentCategoryId);
   }
 
   render() {
-    console.log("vid categores", this.props.video.categories);
+    console.log("category:", this.props.video.currentCategoryId);
     return (
       <div className="App">
         <header>
           <div>
             <img src={logo} className="logo" alt="logo" />
             <SearchBox onSubmit={this.searchHandler} />
-            <DropdownList items={this.props.video.categories} />
+            <DropdownList
+              currentValue={this.props.video.currentCategoryId}
+              items={this.props.video.categories}
+              onClick={this.props.searchByCategory}
+            />
           </div>
           <Player videoId={this.props.video.currentId} />
         </header>
@@ -56,9 +61,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setCurrentId: id => dispatch(setCurrentId(id)),
-    getPopularVideos: response => dispatch(getPopularVideos(response)),
+    getPopularVideos: categoryId => dispatch(getPopularVideos(categoryId)),
     searchVideos: text => dispatch(searchVideos(text)),
-    getCategories: text => dispatch(getCategories(text))
+    getCategories: text => dispatch(getCategories(text)),
+    searchByCategory: categoryId => dispatch(searchByCategory(categoryId))
   };
 };
 

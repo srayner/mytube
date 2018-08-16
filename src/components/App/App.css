@@ -1,12 +1,10 @@
-
-
 header {
-    /* fixed position a zero-height full width container */
-	  position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: aqua;
+  /* fixed position a zero-height full width container */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
 }
 
 header > div {
@@ -14,6 +12,12 @@ header > div {
   margin: 0 auto;
   display: flex;
 }
+
+header > iframe {
+  display: block;
+  margin: 0 auto;
+}
+
 .logo {
   margin: 15px;
   height: 30px;
@@ -23,4 +27,3 @@ main {
   margin: 370px auto 0 auto;
   max-width: 560px;
 }
-

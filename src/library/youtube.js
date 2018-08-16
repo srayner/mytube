@@ -5,13 +5,15 @@ class YouTube {
   searchUrl = "https://www.googleapis.com/youtube/v3";
   videoPlayerUrl = "https://www.youtube.com/embed/";
 
-  getPopularVideos() {
+  getPopularVideos(categoryId) {
+    const videoCategoryId = categoryId || 0;
     return axios.get(this.searchUrl + "/videos", {
       params: {
         key: apiKey,
         part: "snippet,statistics",
         chart: "mostPopular",
-        maxResults: 25
+        maxResults: 25,
+        videoCategoryId: categoryId
       }
     });
   }
